@@ -1,0 +1,49 @@
+g++ -std=c++11 proxy.cpp -lpqxx -lpq -o proxy
+CREATE TABLE numtest(
+   id TEXT PRIMARY KEY     NOT NULL,
+   age         TEXT    NOT NULL
+);
+
+DET加密(int, string)已经完成
+
+./det_encrypt 生成并保存key和iv，加密字符串，将密文保存，可以存储到数据库
+key: FEBA41DA8FC0D0CD
+iv: A0EF0C78AB4090D4
+key stored to key/l1_key_det
+iv stored to key/det_iv
+The plaintext is: Hello world!
+cipher text: 9435B20AFAE35E468BBCFC11607D7D7D
+ciphertext stored to data/ciphertext_det
+
+./det_decrypt 读取key和iv，读取字符串，解密，得到明文
+key: FEBA41DA8FC0D0CD
+iv: A0EF0C78AB4090D4
+cipher text: 9435B20AFAE35E468BBCFC11607D7D7D
+The plaintext is: Hello world!
+
+
+OPE加密(int)完成，明文和密文有相同的大小关系
+当前使用不实际的SimpleOPE，无法使用key，后续需要使用能用的OPE，如BCLO09
+./ope_encrypt 加密字符串，将密文保存
+The plaintext is: 123
+cipher text: 32303633353937363936
+ciphertext stored to data/ciphertext_ope
+
+./det_decrypt 读取字符串，解密，得到明文
+cipher text: 32303633353937363936
+The plaintext is: 123
+
+
+RND加密完成
+./rnd_encrypt 每次加密生成rnd密文和两个key并保存
+cipher DET: 440ED5537269A42C
+cipher OPE: 32303633353937363936
+cipher: 36440ED69A42C39363230363335393755372
+
+./rnd_decrypt  读取rnd密文和key，每一个key解对应的ciphertext
+cipher_rnd: 36440ED69A42C39363230363335393755372
+l2_key_det 2-7-31-36-7-13
+l2_key_ope 17-31-0-2-13-17
+decode det: 440ED5537269A42C
+decode ope: 32303633353937363936
+
