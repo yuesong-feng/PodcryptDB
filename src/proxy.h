@@ -16,3 +16,7 @@ vector<vector<string>> proxy_select_numtest();
 vector<vector<string>> proxy_select_numtest_between(const string& field, int num1, int num2);
 
 vector<vector<string>> proxy_select_numtest_sum();
+
+bool proxy_delete_numtest_equal(const string& field, int num);
+
+bool proxy_delete_numtest_between(const string& field, int num1, int num2);

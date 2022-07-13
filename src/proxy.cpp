@@ -8,27 +8,6 @@
 #include "Onion.h"
 using namespace std;
 
-// running in proxy,
-// vector<vector<string>> proxy(const string &sql) {
-//   // parse sql
-//   cout << "original sql: " << sql << endl;
-
-//   // encrypt int and string in sql statement
-//   PgQueryParseResult result = pg_query_parse(sql.c_str());
-//   printf("%s\n", result.parse_tree);
-//   pg_query_free_parse_result(result);
-  
-//   string rewrote_sql = encrypt_sql(sql);
-//   cout << "proxy encrypt to: " << rewrote_sql << endl;
-
-//   // send sql to server, execute, get result
-//   auto server_ret = server_insert(rewrote_sql);
-
-//   // rewrite result, decrypt plaintext
-//   auto res = decrypt_res(server_ret);
-//   return res;
-// }
-
 bool proxy_insert_numtest(int num1, int num2){
   cout << "original sql: " << "INSERT INTO numtest VALUES (" << num1 << ", " << num2 << ");" << endl;
   
@@ -119,4 +98,26 @@ vector<vector<string>> proxy_select_numtest_sum(){
   }
   res.push_back(sum_vec);
   return res;
+}
+
+bool proxy_delete_numtest_equal(const string& field, int num){
+  cout << "original sql: " << "DELETE FROM numtest WHERE " << field << " = " << num << ";" << endl;
+
+  Onion o;
+  string rewrote_sql = "DELETE FROM numtest WHERE " + field + " = '" + o.Encrypt(num) + "';";
+
+  cout << "proxy encrypt to: " << rewrote_sql << endl;
+  auto server_ret = server_delete_numtest_equal(rewrote_sql);
+  return true;
+}
+
+bool proxy_delete_numtest_between(const string& field, int num1, int num2){
+    OPE ope;
+  RND rnd;
+  rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
+
+  string sql = "DELETE FROM numtest where " + field + " BETWEEN " + ope.Encrypt_int(num1) + " AND " + ope.Encrypt_int(num2) + ";";
+  cout << sql << endl;
+  vector<vector<string>> server_ret = server_delete_numtest_between(field, ope.Encrypt_int(num1), ope.Encrypt_int(num2));
+  return true;
 }
