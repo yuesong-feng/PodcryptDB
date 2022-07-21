@@ -122,6 +122,9 @@ bool proxy_delete_numtest_between(const string& field, int num1, int num2){
   RND rnd;
   rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
 
+  string original_sql = "DELETE FROM numtest where " + field + " BETWEEN " + to_string(num1) + " AND " + to_string(num2) + ";";
+  cout << original_sql << endl;
+
   string sql = "DELETE FROM numtest where " + field + " BETWEEN " + ope.Encrypt_int(num1) + " AND " + ope.Encrypt_int(num2) + ";";
   cout << sql << endl;
   vector<vector<string>> server_ret = server_delete_numtest_between(field, ope.Encrypt_int(num1), ope.Encrypt_int(num2));
