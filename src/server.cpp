@@ -9,6 +9,7 @@ using namespace std;
 
 vector<vector<string>> server_insert_numtest(const string &sql) {
   try {
+    // clock_t start = clock();
     pqxx::connection c{
         "dbname=testdb user=postgres password=postgres \
         hostaddr=127.0.0.1 port=5432"};
@@ -16,6 +17,8 @@ vector<vector<string>> server_insert_numtest(const string &sql) {
     pqxx::work txn{c};
     pqxx::result result{txn.exec(sql)};
     txn.commit();
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return {};
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
@@ -29,6 +32,7 @@ vector<vector<string>> server_insert_numtest(const string &sql) {
 
 vector<vector<string>> server_select_numtest_equal(const string &field, const string& val) {
   try {
+    // clock_t start = clock();
     RND rnd;
     rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
     pqxx::connection c{
@@ -63,6 +67,8 @@ vector<vector<string>> server_select_numtest_equal(const string &field, const st
         vec.push_back(row_vec);
       }
     }
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return vec;
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
@@ -76,6 +82,8 @@ vector<vector<string>> server_select_numtest_equal(const string &field, const st
 
 vector<vector<string>> server_select_numtest(){
   try {
+    // clock_t start = clock();
+
     RND rnd;
     rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
     pqxx::connection c{
@@ -101,6 +109,9 @@ vector<vector<string>> server_select_numtest(){
       }
       vec.push_back(row_vec);
     }
+
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return vec;
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
@@ -114,6 +125,7 @@ vector<vector<string>> server_select_numtest(){
 
 vector<vector<string>> server_select_numtest_between(const string& field, const string& val1, const string& val2){
   try {
+    // clock_t start = clock();
     RND rnd;
     rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
     pqxx::connection c{
@@ -154,6 +166,8 @@ vector<vector<string>> server_select_numtest_between(const string& field, const 
         vec.push_back(row_vec);
       }
     }
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return vec;
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
@@ -167,6 +181,7 @@ vector<vector<string>> server_select_numtest_between(const string& field, const 
 
 vector<vector<string>> server_delete_numtest_equal(const string &sql){
     try {
+      // clock_t start = clock();
     pqxx::connection c{
         "dbname=testdb user=postgres password=postgres \
         hostaddr=127.0.0.1 port=5432"};
@@ -174,6 +189,8 @@ vector<vector<string>> server_delete_numtest_equal(const string &sql){
     pqxx::work txn{c};
     pqxx::result result{txn.exec(sql)};
     txn.commit();
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return {};
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;
@@ -187,6 +204,7 @@ vector<vector<string>> server_delete_numtest_equal(const string &sql){
 
 vector<vector<string>> server_delete_numtest_between(const string& field, const string& val1, const string& val2){
     try {
+      // clock_t start = clock();
     RND rnd;
     rnd.recover_keys("key/l2_key_det", "key/l2_key_ope");
     pqxx::connection c{
@@ -217,6 +235,8 @@ vector<vector<string>> server_delete_numtest_between(const string& field, const 
         }
       }
     }
+    // clock_t end = clock();
+    // printf("scope: Server, time: %lu us\n", end - start);
     return {};
   } catch (pqxx::sql_error const &e) {
     std::cerr << "SQL error: " << e.what() << std::endl;

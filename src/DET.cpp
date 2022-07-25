@@ -8,6 +8,7 @@
 #include "cryptopp/modes.h"
 #include "cryptopp/files.h"
 #include "util.h"
+#include "Timer.h"
 
 #define KEY_LEN DES::DEFAULT_KEYLENGTH
 #define IV_LEN DES::BLOCKSIZE
@@ -69,12 +70,24 @@ string DET::Decrypt(const string &ciphertext){
 }
 
 string DET::Encrypt_int(const int plaintext){
+	// clock_t start = clock();
+
 	string pt_str = to_string(plaintext);
-	return tohex(this->Encrypt(pt_str));
+	string ret = tohex(this->Encrypt(pt_str));
+
+	// clock_t end = clock();
+  	// printf("scope: DET Encrypt, time: %lu us\n", end - start);
+	return ret;
 }
 int DET::Decrypt_int(const string &ciphertext){
+	// clock_t start = clock();
+
 	string str = this->Decrypt(fromhex(ciphertext));
-	return stoi(str);
+	int ret = stoi(str);
+
+	// clock_t end = clock();
+  	// printf("scope: DET Decrypt, time: %lu us\n", end - start);
+	return ret;
 }
 
 void DET::print_key(){
